@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using Flurl.Http;
+using Spectre.Console;
 using System.Diagnostics;
 using System.Text;
 
@@ -40,7 +41,7 @@ namespace EasterPuzzleConsole
             }
             else
             {
-                DisplayMainChecklist();
+                PlayLoadMovie();
             }
         }
 
@@ -202,6 +203,7 @@ namespace EasterPuzzleConsole
             AnsiConsole.Write(new FigletText(" ").LeftJustified().Color(Color.Aqua));
             AnsiConsole.Write(new FigletText("!!CONGRATULATIONS!!").Centered().Color(Color.Aqua));
             Thread.Sleep(3000);
+            TurnOnLight();
             for (int i = 0; i < 10; i++)
             {
                 Console.Clear();
@@ -212,8 +214,22 @@ namespace EasterPuzzleConsole
                 Console.Clear();
                 Thread.Sleep(500);
             }
+
             DisplayMainChecklist();
 
+        }
+
+        private static void TurnOnLight()
+        {
+            //192.168.1.101
+            try
+            {
+                "http://192.168.1.101:9123/elgato/lights".PutStringAsync("{ \"numberOfLights\":1, \"lights\": [ { \"on\": 1}]}");
+            }
+            catch
+            {
+
+            }
         }
 
         private static void NumberPredictionStart()
